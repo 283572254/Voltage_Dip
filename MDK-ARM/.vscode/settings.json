@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "key.h": "c",
+        "globle.h": "c",
+        "oled.h": "c"
+    }
+}

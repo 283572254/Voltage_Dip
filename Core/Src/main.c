@@ -18,12 +18,14 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "i2c.h"
 #include "tim.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "key.h"
+#include "OLED.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -46,12 +48,14 @@
 /* USER CODE BEGIN PV */
 extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim1;
+int   gVoltageDip_time = 10;
+char  gStartFlag       = 0 ;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
-
+void Set_Dip_time(int16_t time);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -66,7 +70,7 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+  uint8_t ucKey = 0;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -89,9 +93,12 @@ int main(void)
   MX_GPIO_Init();
   MX_TIM1_Init();
   MX_TIM2_Init();
+  MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
-  HAL_TIM_Base_Start_IT(&htim2);
-  HAL_TIM_Base_Start_IT(&htim1);
+  OLED_Init();
+  OLED_CLS();
+  /* 启用外部中断按键 */
+  HAL_GPIO_WritePin(GPIOF,GPIO_PIN_9,GPIO_PIN_SET);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -99,8 +106,39 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+    
     /* USER CODE BEGIN 3 */
+    ucKey = key_scan(0);
+    if(ucKey)
+    {
+        switch (ucKey)
+        {
+        case WKUP_PRES:
+        /*start key:set start flag*/
+        gStartFlag = 1;
+        /*oled dispay*/
+        
+          break;
+        case KEY0_PRES:
+        /*add time value*/
+        gVoltageDip_time++;
+        /*oled dispay*/
+        Set_Dip_time(gVoltageDip_time);
+          break;
+        case KEY1_PRES:
+        /*decrease time value*/
+        gVoltageDip_time--;
+        /*oled dispay*/
+        Set_Dip_time(gVoltageDip_time);
+          break;
+        default:
+          break;
+        }
+    }
+    if(gStartFlag == 1)
+      HAL_TIM_Base_Start_IT(&htim2);
+    else
+      HAL_TIM_Base_Stop_IT(&htim2);
   }
   /* USER CODE END 3 */
 }
@@ -152,7 +190,12 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void Set_Dip_time(int16_t time)
+{
+  OLED_CLS();
+  //OLED_ShowStr(0,0,"Set_time",2);
+  OLED_ShowNumber(0,4,time,2);
+}
 /* USER CODE END 4 */
 
 /**
