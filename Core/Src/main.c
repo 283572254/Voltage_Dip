@@ -50,6 +50,7 @@ extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim1;
 int   gVoltageDip_time = 10;
 char  gStartFlag       = 0 ;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -192,9 +193,10 @@ void SystemClock_Config(void)
 /* USER CODE BEGIN 4 */
 void Set_Dip_time(int16_t time)
 {
-  OLED_CLS();
-  //OLED_ShowStr(0,0,"Set_time",2);
-  OLED_ShowNumber(0,4,time,2);
+  OLED_Refresh(80,0,128,2);
+  OLED_ShowStr(0,0,"Set_time",2);
+  OLED_ShowNumber(80,0,time,2);
+  
 }
 /* USER CODE END 4 */
 

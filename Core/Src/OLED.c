@@ -75,6 +75,20 @@ void OLED_Fill(unsigned char Fill_Data)
 		}
 }
 
+void OLED_Refresh(unsigned char x_start, unsigned char y_start, unsigned char x_end, unsigned char y_end) 
+{
+    unsigned char x, y;
+    for (y = y_start; y <= y_end; y++) {
+        OLED_SetPos(x_start, y);
+        for (x = x_start; x <= x_end; x++) {
+            // 在这里写入刷新指定区域的代码，例如写入相应的数据或图像信息
+            // 这里只是示例，你需要根据具体的需求进行实现
+            WriteData(0x00); // 假设刷新内容为 0x00，可以根据实际情况修改
+        }
+    }
+}
+
+
 //清屏
 void OLED_CLS(void)
 {

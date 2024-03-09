@@ -2,8 +2,13 @@
 Build target 'Voltage_Dip'
 compiling main.c...
 compiling OLED.c...
+..\Core\Src\OLED.c(117): warning:  #223-D: function "sprintf" declared implicitly
+      sprintf(str, "%d", num);
+..\Core\Src\OLED.c(120): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "unsigned char *"
+      OLED_ShowStr(x, y, str, TextSize);
+..\Core\Src\OLED.c: 2 warnings, 0 errors
 linking...
-Program Size: Code=7722 RO-data=2522 RW-data=32 ZI-data=1864  
+Program Size: Code=8058 RO-data=2522 RW-data=32 ZI-data=1864  
 FromELF: creating hex file...
-"Voltage_Dip\Voltage_Dip.axf" - 0 Error(s), 0 Warning(s).
+"Voltage_Dip\Voltage_Dip.axf" - 0 Error(s), 2 Warning(s).
 Build Time Elapsed:  00:00:02

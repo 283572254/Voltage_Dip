@@ -15,6 +15,6 @@ void OLED_ShowStr(unsigned char x,unsigned char y,unsigned char ch[],unsigned ch
 void OLED_ShowCN(unsigned char x,unsigned char y,unsigned char N);
 void OLED_ShowBMP(unsigned char x0,unsigned char y0,unsigned char x1,unsigned char y1,unsigned char BMP[]);
 void OLED_ShowNumber(unsigned char x, unsigned char y, int num, unsigned char TextSize);
-
+void OLED_Refresh(unsigned char x_start, unsigned char y_start, unsigned char x_end, unsigned char y_end);
 #endif
 
